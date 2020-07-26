@@ -83,11 +83,14 @@ def create_new_drink(payload):
     if not drink_validator(request_data):
         abort(400)
 
-    new_drink = Drink(
-        title=request_data['title'],
-        recipe=json.dumps(request_data['recipe'])
-    )
-    new_drink.insert()
+    try:
+        new_drink = Drink(
+            title=request_data['title'],
+            recipe=json.dumps(request_data['recipe'])
+        )
+        new_drink.insert()
+    except:
+        abort(500)
 
     return jsonify({
         'success': True,
@@ -123,9 +126,12 @@ def update_drink(payload, id):
     if not drink:
         abort(404)
 
-    drink.title = request_data['title']
-    drink.recipe = json.dumps(request_data['recipe'])
-    drink.update()
+    try:
+        drink.title = request_data['title']
+        drink.recipe = json.dumps(request_data['recipe'])
+        drink.update()
+    except:
+        abort(500)
 
     return jsonify({
         'success': True,
@@ -152,7 +158,10 @@ def delete_drink(payload, id):
     if not drink:
         abort(404)
 
-    drink.delete()
+    try:
+        drink.delete()
+    except:
+        abort(500)
 
     return jsonify({
         'success': True,
@@ -186,6 +195,15 @@ def unprocessable(error):
 
 '''
 
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return jsonify({
+        'success': False,
+        'error': 'Internal server error.'
+    }), 500
+
+
 '''
 @TODO implement error handler for 404
     error handler should conform to general task above 
@@ -207,7 +225,7 @@ def not_found(error):
 
 
 @app.errorhandler(AuthError)
-def not_found(error):
+def auth_error_handler(error):
     return jsonify({
         'success': False,
         'error': error.error
