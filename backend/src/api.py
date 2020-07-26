@@ -108,6 +108,31 @@ def create_new_drink(payload):
 '''
 
 
+@app.route('/drinks/<int:id>', methods=['PATCH'])
+@requires_auth('patch:drinks')
+def update_drink(payload, id):
+    if not getattr(request, 'data'):
+        abort(400)
+
+    request_data = json.loads(request.data)
+    print(request_data)
+    if not drink_validator(request_data):
+        abort(400)
+
+    drink = Drink.query.filter(Drink.id == id).one_or_none()
+    if not drink:
+        abort(404)
+
+    drink.title = request_data['title']
+    drink.recipe = json.dumps(request_data['recipe'])
+    drink.update()
+
+    return jsonify({
+        'success': True,
+        'drinks': [drink.long()]
+    })
+
+
 '''
 @TODO implement endpoint
     DELETE /drinks/<id>
