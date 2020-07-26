@@ -48,6 +48,16 @@ def get_drinks():
         or appropriate status code indicating reason for failure
 '''
 
+@app.route('/drinks-detail', methods=['GET'])
+@requires_auth('get:drinks-detail')
+def get_drinks_detail(payload):
+    drinks = Drink.query.all()
+    serialized_drinks = [drink.short() for drink in drinks]
+    return jsonify({
+        'success': True,
+        'drinks': serialized_drinks
+    })
+
 
 '''
 @TODO implement endpoint
