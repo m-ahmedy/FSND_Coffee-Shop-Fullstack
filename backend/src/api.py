@@ -21,7 +21,7 @@ CORS(app)
 
 # ROUTES
 '''
-@TODO implement endpoint
+Implemented endpoint
     GET /drinks
         it should be a public endpoint
         it should contain only the drink.short() data representation
@@ -41,7 +41,7 @@ def get_drinks():
 
 
 '''
-@TODO implement endpoint
+Implemented endpoint
     GET /drinks-detail
         it should require the 'get:drinks-detail' permission
         it should contain the drink.long() data representation
@@ -62,7 +62,7 @@ def get_drinks_detail(payload):
 
 
 '''
-@TODO implement endpoint
+Implemented endpoint
     POST /drinks
         it should create a new row in the drinks table
         it should require the 'post:drinks' permission
@@ -99,7 +99,7 @@ def create_new_drink(payload):
 
 
 '''
-@TODO implement endpoint
+Implemented endpoint
     PATCH /drinks/<id>
         where <id> is the existing model id
         it should respond with a 404 error if <id> is not found
@@ -140,7 +140,7 @@ def update_drink(payload, id):
 
 
 '''
-@TODO implement endpoint
+Implemented endpoint
     DELETE /drinks/<id>
         where <id> is the existing model id
         it should respond with a 404 error if <id> is not found
@@ -185,7 +185,7 @@ def unprocessable(error):
 
 
 '''
-@TODO implement error handlers using the @app.errorhandler(error) decorator
+Implemented error handlers using the @app.errorhandler(error) decorator
     each error handler should return (with approprate messages):
              jsonify({
                     "success": False, 
@@ -205,7 +205,7 @@ def internal_server_error(error):
 
 
 '''
-@TODO implement error handler for 404
+Implemented error handler for 404
     error handler should conform to general task above 
 '''
 
@@ -219,7 +219,7 @@ def not_found(error):
 
 
 '''
-@TODO implement error handler for AuthError
+Implemented error handler for AuthError
     error handler should conform to general task above 
 '''
 
