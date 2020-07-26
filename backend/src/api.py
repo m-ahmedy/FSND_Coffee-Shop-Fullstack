@@ -135,5 +135,5 @@ def not_found(error):
 def not_found(error):
     return jsonify({
         'success': False,
-        'error': error.description
+        'error': error.error
     }), error.status_code
