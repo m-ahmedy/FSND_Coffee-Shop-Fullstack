@@ -55,7 +55,7 @@ def get_token_auth_header():
             'description': 'Token not found.'
         }, 401)
 
-    elif len(header_parts) >= 2:
+    elif len(header_parts) > 2:
         raise AuthError({
             'code': 'invalid_header',
             'description': 'Authorization header must be bearer token.'
@@ -111,7 +111,7 @@ def check_permissions(permission, payload):
 
 def verify_decode_jwt(token):
     json_url = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
-    jwks: dict = json.loads(urlopen.read())
+    jwks: dict = json.loads(json_url.read())
     unverified_header = jwt.get_unverified_header(token)
     rsa_key = {}
     if 'kid' not in unverified_header:
