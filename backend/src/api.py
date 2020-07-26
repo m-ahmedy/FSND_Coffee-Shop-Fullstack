@@ -6,6 +6,7 @@ from flask_cors import CORS
 
 from .database.models import db_drop_and_create_all, setup_db, Drink
 from .auth.auth import AuthError, requires_auth
+from .validators import drink_validator
 
 app = Flask(__name__)
 setup_db(app)
@@ -48,6 +49,7 @@ def get_drinks():
         or appropriate status code indicating reason for failure
 '''
 
+
 @app.route('/drinks-detail', methods=['GET'])
 @requires_auth('get:drinks-detail')
 def get_drinks_detail(payload):
@@ -68,6 +70,29 @@ def get_drinks_detail(payload):
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
 '''
+
+
+@app.route('/drinks', methods=['POST'])
+@requires_auth('post:drinks')
+def create_new_drink(payload):
+    if not getattr(request, 'data'):
+        abort(400)
+
+    request_data = json.loads(request.data)
+    print(request_data)
+    if not drink_validator(request_data):
+        abort(400)
+
+    new_drink = Drink(
+        title=request_data['title'],
+        recipe=json.dumps(request_data['recipe'])
+    )
+    new_drink.insert()
+
+    return jsonify({
+        'success': True,
+        'drinks': [new_drink.long()]
+    })
 
 
 '''
